@@ -18,7 +18,7 @@ print(a.ndim) #printig the dimension
 print(a.shape) #printing the shape
 
 im= Image.open("abhi.jpg");
-if(size(img,3)~=1)
+if(size(img,3)!=1)
 {
     img = rgb2gray(img);
     img=uint8(img);
