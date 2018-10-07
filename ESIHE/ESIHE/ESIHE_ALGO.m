@@ -1,16 +1,5 @@
 function [ ESIHEoutput ] = ESIHE_ALGO( img )
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% All rights reserved.
-% This work should only be used for nonprofit purposes.
-% Please cite the paper when you use this code:
-% Kuldeep Singh, Rajiv Kapoor,"Image enhancement using exposure based sub image histogram equalization",
-% Pattern Recogn. Lett. 36 (2014) 10–14.
-%
-% AUTHORS:
-%     Kuldeep Singh,Scientist , Central Research Lab, Bharat Electronics Ltd, India,
-%     email:kuldeep.er@gmail.com
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Histogram Calculation
+
 L=256;
 x=[0:1:L-1];
 [w,l]=size(img); 
