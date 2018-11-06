@@ -31,6 +31,7 @@ exposure = (1.0/l)*(num/(1.0*denum))
 xa=l*(1-exposure)
 print("Exposure value:", exposure)
 print("Threshold value:", xa)
+
 clipthreshold =0
 
 s=0
@@ -40,5 +41,16 @@ clipthreshold = (1.0/l)*s
 
 for i in range(1, l+1):
     if(hist[k]>clipthreshold):
-        hist[k]=clipthreshold
+        hist_c[k]=clipthreshold
+    else:
+        hist_c[k]=hist[k];
+
+print("Histogram of the image:")
+print (hist_c) #Clipped Histogram of the image
+
+#Step4 Histogram Sub Division and Equalization
+
+
+
+
 
