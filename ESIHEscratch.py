@@ -15,4 +15,6 @@ image.load()
 data = np.asarray(image, dtype="int32")
 print("Matrix:", data);
 hist,bins = np.histogram(data.ravel(),256,[0,256])
-print (hist) #Histogram of the image calculated
+printI"Histogram of the image:")
+print (hist) #Histogram of the image calculate
+
