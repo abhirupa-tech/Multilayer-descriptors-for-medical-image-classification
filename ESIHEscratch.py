@@ -66,7 +66,8 @@ for i in range(0,int(round(xa+1))):
     pl[i]=hist_c[i]/nl
 
 for i in range(int(round(xa+1)),l):
-    pl[i]=hist_c[i]/nu
+    pu[i]=hist_c[i]/nu
+    # print(pu[i], ":::", i)
 
 
 #Get corresponding CDF
@@ -77,7 +78,11 @@ for i in range(0,int(round(xa+1))):
     cl+=pl[i]
 
 for i in range(int(round(xa+1)),l):
+    # print(pu[i],":::",i)
     cu+=pu[i]
+
+fl=xa*cl
+fu=(xa+1) + (l-xa+1)*cu
 
 
 
