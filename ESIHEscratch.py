@@ -31,6 +31,7 @@ exposure = (1.0/l)*(num/(1.0*denum))
 xa=l*(1-exposure)
 print("Exposure value:", exposure)
 print("Threshold value:", xa)
+print("l:",l)
 
 clipthreshold =0
 
@@ -39,16 +40,44 @@ for i in range(1,l+1):
    s+=hist[i-1]
 clipthreshold = (1.0/l)*s
 
+hist_c=[]
+
 for i in range(1, l+1):
-    if(hist[k]>clipthreshold):
-        hist_c[k]=clipthreshold
+    if(hist[i-1]>clipthreshold):
+        hist_c.append(clipthreshold)
     else:
-        hist_c[k]=hist[k];
+        hist_c.append(hist[i-1]);
 
-print("Histogram of the image:")
+print("Clipped Histogram of the image:")
 print (hist_c) #Clipped Histogram of the image
+print("Rounded exp value:", int(round(xa)))
+#Step 4 Histogram Sub Division and Equalization
+undexp= []
+overexp= []
+underexp= hist[0:int(round(xa+1))]
+overexp= hist[int(round(xa+1)):l]
+nl=len(underexp)
+nu=len(overexp)
 
-#Step4 Histogram Sub Division and Equalization
+
+pl=[None] * l
+pu=[None] * l
+for i in range(0,int(round(xa+1))):
+    pl[i]=hist_c[i]/nl
+
+for i in range(int(round(xa+1)),l):
+    pl[i]=hist_c[i]/nu
+
+
+#Get corresponding CDF
+cl =0
+cu =0
+
+for i in range(0,int(round(xa+1))):
+    cl+=pl[i]
+
+for i in range(int(round(xa+1)),l):
+    cu+=pu[i]
 
 
 
