@@ -56,36 +56,41 @@ undexp= []
 overexp= []
 underexp= hist[0:int(round(xa+1))]
 overexp= hist[int(round(xa+1)):l]
-nl=len(underexp)
-nu=len(overexp)
 
+nl=0
+nu=0
 
-pl=[None] * l
-pu=[None] * l
+for i in range (0,xa+1):
+    nl+=hist_c[i]
+for i in range (xa+1, l):
+    nu+=hist_c[i]
+
+pl=[]
+pu=[]
 for i in range(0,int(round(xa+1))):
-    pl[i]=hist_c[i]/nl
+    pl.append(hist_c[i]/nl)
 
 for i in range(int(round(xa+1)),l):
-    pu[i ]=hist_c[i]/nu
+    pu.append(hist_c[i]/nu)
     # print(pu[i], ":::", i)
 
 
 #Get corresponding CDF
-cl =[None] * len(pl)
-cu = [None]* len(pu)
+cl =[]
+cu =[]
 
-cl[0]=pl[0];
+cl.append(pl[0]);
+print("len",len(pl))
 for r in range(1,len(pl)):
-    cl[r]=pl[r]+cl[r-1];
+    # print(r, ":a:", pl[r])
+    # print(r, ":b:", cl[r-1])
+    cl.append(pl[r]+cl[r-1]);
 
-cu[0]=pu[0];
+cu.append(pu[0]);
 for r in range(1,(len(pu))):
-    cu[r]=pu[r]+cu[r-1];,,
+    cu.append(pu[r]+cu[r-1]);
 
 
-
-fl=xa*cl
-fu=(xa+1) + (l-xa+1)*cu
 
 
 
