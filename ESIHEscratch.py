@@ -28,7 +28,7 @@ for i in range(1,l+1) :
 
 #Step3 Clipping threshold and calculate clipping hstogram
 exposure = (1.0/l)*(num/(1.0*denum))
-xa=l*(1-exposure)
+xa=int(round(l*(1-exposure)))
 print("Exposure value:", exposure)
 print("Threshold value:", xa)
 print("l:",l)
@@ -66,20 +66,23 @@ for i in range(0,int(round(xa+1))):
     pl[i]=hist_c[i]/nl
 
 for i in range(int(round(xa+1)),l):
-    pu[i]=hist_c[i]/nu
+    pu[i ]=hist_c[i]/nu
     # print(pu[i], ":::", i)
 
 
 #Get corresponding CDF
-cl =0
-cu =0
+cl =[None] * len(pl)
+cu = [None]* len(pu)
 
-for i in range(0,int(round(xa+1))):
-    cl+=pl[i]
+cl[0]=pl[0];
+for r in range(1,len(pl)):
+    cl[r]=pl[r]+cl[r-1];
 
-for i in range(int(round(xa+1)),l):
-    # print(pu[i],":::",i)
-    cu+=pu[i]
+cu[0]=pu[0];
+for r in range(1,(len(pu))):
+    cu[r]=pu[r]+cu[r-1];,,
+
+
 
 fl=xa*cl
 fu=(xa+1) + (l-xa+1)*cu
