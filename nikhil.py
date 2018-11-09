@@ -1,5 +1,6 @@
-
 import numpy as np
+from scipy import ndimage
+import tifffile as tiff
 import scipy
 import matplotlib.pyplot as plt
 import sys
@@ -9,16 +10,33 @@ import sys
 from PIL import Image
 #import pillow as plt
 
-# Load the image into an array: image
-im = Image.open('im1.jpeg') #Loading image
-im.load()
 
-indices = np.dstack(np.indices(im))
-data = np.concatenate((im, indices), axis=-1)
-print("Revamped array:", data)
+# ------- Changes start here -------
 
-data = np.asarray(image, dtype="uint32") #Converting image to matrix (which is coming in some weird format
-print("Matrix:", data);
+def int16_to_int8(img16):
+    image8 = (img16/256).astype('uint8')
+    return image8
+
+
+path = 'hoech001.tif'
+if path[path.rfind('.'):] in ['.tiff', '.tif']:
+    img16 = tiff.imread(path)
+else:
+    img16 = ndimage.imread(path)
+
+# Converting all the 16bit image into 8bit
+if img16.dtype == 'uint16':
+    data = int16_to_int8(img16)
+else:
+    data = img16
+
+for x in data:
+    print(x)
+
+# print(data.ndim) = 2.. hence a 2d image
+
+# ------- Changes end here -------
+
 w=len(data)
 l1=len(data[0])
 hist,bins = np.histogram(data.ravel(),256,[0,256])
@@ -28,7 +46,7 @@ print (hist) #Histogram of the image calculate
 #Step2, calculate Xa
 num =0
 denum=0
-l=len(hist);
+l=len(hist)
 for i in range(1,l+1) :
     num+= hist[i-1]*i
     denum+=hist[i-1]
@@ -53,11 +71,11 @@ for i in range(1, l+1):
     if(hist[i-1]>clipthreshold):
         hist_c.append(clipthreshold)
     else:
-        hist_c.append(hist[i-1]);
+        hist_c.append(hist[i-1])
 
-print("Clipped Histogram of the image:")
-print (hist_c) #Clipped Histogram of the image
-print("Rounded exp value:", int(round(xa)))
+# print("Clipped Histogram of the image:")
+# print (hist_c) #Clipped Histogram of the image
+# print("Rounded exp value:", int(round(xa)))
 #Step 4 Histogram Sub Division and Equalization
 undexp= []
 overexp= []
@@ -75,6 +93,7 @@ for i in range (xa+1, l):
 pl=[]
 pu=[]
 for i in range(0,int(round(xa+1))):
+    # print(hist_c[i],"and", nl)
     pl.append(hist_c[i]/nl)
 
 for i in range(int(round(xa+1)),l):
@@ -86,29 +105,32 @@ for i in range(int(round(xa+1)),l):
 cl =[]
 cu =[]
 
-cl.append(pl[0]);
+cl.append(pl[0])
 print("len",len(pl))
 for r in range(1,len(pl)):
-    cl.append(pl[r]+cl[r-1]);
+    cl.append(pl[r]+cl[r-1])
 
-cu.append(pu[0]);
+cu.append(pu[0])
 for r in range(1,(len(pu))):
-    cu.append(pu[r]+cu[r-1]);
+    cu.append(pu[r]+cu[r-1])
 
-ESIHEoutput = [[0 for x in range(w)] for y in range(l1)]
+ESIHEoutput = [[0 for x in range(l1)] for y in range(w)]
+# print("row and col",w, "and",l1)
 
-print("Data:",data[0]) #Check this output @Nikhil
+# print("Data:",data[0]) #Check this output @Nikhil
 for r in range(0,w ):
     for s in range (0,l1):
         if data[r][s]<(xa+1):
-            f=xa*cl(data[r][s]+1);
-            ESIHEoutput[r][s]=round(f);
+            f=xa*cl[data[r][s]+1]
+            # print("r",r,"s",s)
+            ESIHEoutput[r][s]=round(f)
+            # print("ESIHE", r," n ", s, ":",ESIHEoutput[r][s])
         else:
-            f=(xa+1)+(255-xa)*cu((data[r][s]-(xa+1))+1);
-            ESIHEoutput[r][s]=round(f);
+            f=(xa+1)+(255-xa)*cu[(data[r][s]-(xa+1))+1]
+            ESIHEoutput[r][s]=round(f)
 
 
+print("\nRESULT:")
 
-
-
-
+print("Output matrix:\n\n")
+print(ESIHEoutput)
